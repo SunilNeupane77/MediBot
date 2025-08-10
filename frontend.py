@@ -1,5 +1,9 @@
 import streamlit as st
 import requests
+import os
+
+# Define the backend URL
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 # Set the title of the web app
 st.title("Medical Chatbot")
@@ -24,7 +28,7 @@ if user_input := st.chat_input("Type your message here..."):
 
     # Send the user input to the backend
     response = requests.post(
-        "http://localhost:8000/chat",
+        f"{BACKEND_URL}/chat",
         json={
             "state": st.session_state.conversation,
         }
