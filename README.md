@@ -1,5 +1,10 @@
 # Medical Chatbot: A Medical Chatbot
 
+![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Code Size](https://img.shields.io/github/languages/code-size/khulalit/MediBot)
+![Dependencies](https://img.shields.io/badge/dependencies-up--to--date-brightgreen)
+
 ## Description
 Medical Chatbot is a conversational AI chatbot designed to provide information about medical conditions, symptoms, and treatments. It is built using Python, Streamlit for the frontend, FastAPI for the backend, and LangChain/LangGraph for the conversational logic.
 
