@@ -52,3 +52,4 @@ This is a conversational AI chatbot designed to provide information about medica
 
 ## Disclaimer
 This chatbot is an AI assistant and not a real doctor. Please consult with a healthcare professional for any medical advice. The information provided by this chatbot is for informational purposes only and should not be considered as medical advice.
+# MediBot
