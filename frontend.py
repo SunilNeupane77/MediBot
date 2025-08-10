@@ -8,6 +8,24 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 # Set the title of the web app
 st.title("Medical Chatbot")
 
+# Sidebar with a button to clear the conversation
+with st.sidebar:
+    st.title("Options")
+    if st.button("Clear History"):
+        st.session_state.conversation = {
+            "messages": ["Hello! I'm MediBot, your medical assistant. How can I help you today?"],
+        }
+        st.rerun()
+
+    st.title("About")
+    st.info(
+        "This is a medical chatbot that can answer your questions about "
+        "medical conditions, symptoms, and treatments."
+    )
+
+    st.markdown("---")
+    st.markdown("Developed by Sunil Neupane")
+
 # Initialize the conversation state in Streamlit's session state
 if "conversation" not in st.session_state:
     st.session_state.conversation = {
