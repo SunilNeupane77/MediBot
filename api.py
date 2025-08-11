@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from graph import app
 from state import ConversationState
+from typing import Any
 
 api = FastAPI()
 
@@ -16,10 +17,10 @@ api.add_middleware(
 )
 
 class ChatInput(BaseModel):
-    state: ConversationState
+    state: Any  # Accept any dict-like state
 
 @api.post("/chat")
-def chat(chat_input: ChatInput) -> ConversationState:
+def chat(chat_input: ChatInput) -> dict:
     # Invoke the graph
     updated_state = app.invoke(chat_input.state)
 

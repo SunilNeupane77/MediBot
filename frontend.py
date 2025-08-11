@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import os
 
-# Define the backend URL
+# Define the backend URL, default to localhost for local dev
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 # Set the title of the web app

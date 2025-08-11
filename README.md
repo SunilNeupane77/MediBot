@@ -52,4 +52,23 @@ This is a conversational AI chatbot designed to provide information about medica
 
 ## Disclaimer
 This chatbot is an AI assistant and not a real doctor. Please consult with a healthcare professional for any medical advice. The information provided by this chatbot is for informational purposes only and should not be considered as medical advice.
+
+## Docker Instructions
+
+# Build and push the backend image
+```bash
+docker build -f backend.Dockerfile -t <your-dockerhub-username>/medical-chatbot-backend:latest .
+docker push <your-dockerhub-username>/medical-chatbot-backend:latest
+```
+
+# Build and push the frontend image
+```bash
+docker build -f frontend.Dockerfile -t <your-dockerhub-username>/medical-chatbot-frontend:latest .
+docker push <your-dockerhub-username>/medical-chatbot-frontend:latest
+```
+
+# To run with docker-compose using published images:
+```bash
+docker-compose up
+```
 # MediBot

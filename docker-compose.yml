@@ -1,0 +1,20 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    image: sunilneupane77/medical-chatbot-backend:latest
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    image: sunilneupane77/medical-chatbot-frontend:latest

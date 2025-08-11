@@ -1,0 +1,19 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+venv/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+.env.example
+
+# Docker
+docker-compose.yml
+backend.Dockerfile
+frontend.Dockerfile
