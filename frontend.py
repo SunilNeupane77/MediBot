@@ -88,15 +88,3 @@ if user_input := st.chat_input("Type your message here..."):
     else:
         with st.chat_message("assistant"):
             st.error("Error: No messages received from the backend.")
-
-# Feedback form below chat
-st.markdown("---")
-st.subheader("Feedback")
-feedback_text = st.text_area("Your feedback about the last answer:")
-if st.button("Submit Feedback") and feedback_text:
-    last_message = st.session_state.conversation["messages"][-1] if st.session_state.conversation["messages"] else ""
-    resp = requests.post(f"{BACKEND_URL}/feedback", json={"message": last_message, "feedback": feedback_text})
-    if resp.ok:
-        st.success("Thank you for your feedback!")
-    else:
-        st.error("Failed to submit feedback.")
