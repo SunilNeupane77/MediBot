@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from graph import app
 from state import ConversationState
 from typing import Any
+import sqlite3
 
 api = FastAPI()
 
@@ -16,9 +17,26 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
-# In-memory store for conversation history and feedback (for demo)
-conversation_history = []
-feedback_list = []
+# SQLite setup
+DB_PATH = "chatbot.db"
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+c = conn.cursor()
+c.execute("""
+CREATE TABLE IF NOT EXISTS conversation_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp TEXT,
+    messages TEXT
+)
+""")
+c.execute("""
+CREATE TABLE IF NOT EXISTS symptom_checks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp TEXT,
+    symptoms TEXT,
+    conditions TEXT
+)
+""")
+conn.commit()
 
 class ChatInput(BaseModel):
     state: Any  # Accept any dict-like state
@@ -26,16 +44,17 @@ class ChatInput(BaseModel):
 class SymptomCheckInput(BaseModel):
     symptoms: str
 
-class FeedbackInput(BaseModel):
-    message: str
-    feedback: str
-
 @api.post("/chat")
 def chat(chat_input: ChatInput) -> dict:
     # Invoke the graph
     updated_state = app.invoke(chat_input.state)
-    # Save to history
-    conversation_history.append(updated_state)
+    # Save to history in SQLite
+    import datetime
+    c.execute(
+        "INSERT INTO conversation_history (timestamp, messages) VALUES (?, ?)",
+        (datetime.datetime.now().isoformat(), str(updated_state["messages"]))
+    )
+    conn.commit()
 
     # Log the structure of the updated state for debugging
     print("Updated state from graph:", updated_state)
@@ -59,7 +78,9 @@ def read_root():
 
 @api.get("/history")
 def get_history():
-    return {"history": conversation_history}
+    c.execute("SELECT timestamp, messages FROM conversation_history ORDER BY id DESC LIMIT 20")
+    rows = c.fetchall()
+    return {"history": [{"timestamp": r[0], "messages": r[1]} for r in rows]}
 
 @api.post("/symptom-check")
 def symptom_check(input: SymptomCheckInput):
@@ -75,9 +96,17 @@ def symptom_check(input: SymptomCheckInput):
             found.extend(conds)
     if not found:
         found = ["No common conditions found. Please consult a doctor."]
+    # Save to SQLite
+    import datetime
+    c.execute(
+        "INSERT INTO symptom_checks (timestamp, symptoms, conditions) VALUES (?, ?, ?)",
+        (datetime.datetime.now().isoformat(), input.symptoms, str(list(set(found))))
+    )
+    conn.commit()
     return {"possible_conditions": list(set(found))}
 
-@api.post("/feedback")
-def submit_feedback(input: FeedbackInput):
-    feedback_list.append({"message": input.message, "feedback": input.feedback})
-    return {"status": "success", "msg": "Feedback received. Thank you!"}
+@api.get("/symptom-checks")
+def get_symptom_checks():
+    c.execute("SELECT timestamp, symptoms, conditions FROM symptom_checks ORDER BY id DESC LIMIT 20")
+    rows = c.fetchall()
+    return {"checks": [{"timestamp": r[0], "symptoms": r[1], "conditions": r[2]} for r in rows]}
