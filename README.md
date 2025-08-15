@@ -13,7 +13,7 @@ Medical Chatbot is a conversational AI chatbot designed to provide information a
 *   **Medical Information:** Provides information on a wide range of medical topics.
 *   **Disclaimer:** Includes a disclaimer in every response to advise users to consult with a healthcare professional.
 *   **Clear Conversation History:** Allows users to clear the conversation history.
-*   **Download Conversation:** Download your chat as a text file.
+*   **Download Conversation:** Download your chat as a text file with a timestamped filename for easy organization.
 *   **Symptom Checker:** Enter symptoms and get possible conditions.
 *   **Feedback Submission:** Submit feedback on chatbot answers.
 *   **View Conversation History:** See all previous conversations in the session.
@@ -54,7 +54,7 @@ Medical Chatbot is a conversational AI chatbot designed to provide information a
     ```bash
     streamlit run frontend.py
     ```
-3.  **Open your web browser and navigate to `http://localhost:8501`**
+3.  **Open your web browser and navigate to `http://localhost:8501`
 
 ## Project Structure
 ```

@@ -3,6 +3,7 @@ import requests
 import os
 import io
 import json
+from datetime import datetime
 
 # Define the backend URL, default to localhost for local dev
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
@@ -28,10 +29,10 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("Developed by Sunil Neupane")
 
-    # Download conversation button
-    if st.button("Download Conversation"):
-        chat_text = "\n".join(st.session_state.conversation["messages"])
-        st.download_button("Download Chat", chat_text, file_name="chat_history.txt")
+    # Download conversation button (always visible, with timestamp)
+    chat_text = "\n".join(st.session_state.conversation["messages"])
+    filename = f"chat_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+    st.download_button("Download Chat", chat_text, file_name=filename)
 
     # Symptom checker UI
     st.title("Symptom Checker")
