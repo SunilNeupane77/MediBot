@@ -48,6 +48,16 @@ with st.sidebar:
         else:
             st.error("Error checking symptoms.")
 
+    # Show recent symptom checks
+    st.title("Recent Symptom Checks")
+    if st.button("Show Symptom Checks"):
+        resp = requests.get(f"{BACKEND_URL}/symptom-checks")
+        if resp.ok:
+            for check in resp.json()["checks"]:
+                st.write(f"{check['timestamp']}: {check['symptoms']} → {check['conditions']}")
+        else:
+            st.error("Could not fetch symptom checks.")
+
     # Conversation history UI
     st.title("Conversation History")
     if st.button("Show History"):
