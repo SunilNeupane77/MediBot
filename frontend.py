@@ -14,6 +14,10 @@ st.title("Medical Chatbot")
 # Sidebar with a button to clear the conversation
 with st.sidebar:
     st.title("Options")
+    if "conversation" not in st.session_state:
+        st.session_state.conversation = {
+            "messages": ["Hello! I'm MediBot, your medical assistant. How can I help you today?"],
+        }
     if st.button("Clear History"):
         st.session_state.conversation = {
             "messages": ["Hello! I'm MediBot, your medical assistant. How can I help you today?"],
